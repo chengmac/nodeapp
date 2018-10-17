@@ -1,0 +1,35 @@
+{
+  "name": "nodeservice",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "node src/app.js",
+    "build": "webpack --config=webpack.config.js --mode=development"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/chengmac/nodeservice.git"
+  },
+  "author": "chengmac",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/chengmac/nodeservice/issues"
+  },
+  "homepage": "https://github.com/chengmac/nodeservice#readme",
+  "dependencies": {
+    "body-parser": "^1.18.3",
+    "consola": "^1.4.4",
+    "cookie-parser": "^1.4.3",
+    "crypto": "^1.0.1",
+    "express": "^4.16.4",
+    "jsonwebtoken": "^8.3.0",
+    "mongoose": "^5.3.3",
+    "morgan": "^1.9.1"
+  },
+  "devDependencies": {
+    "webpack": "^4.20.2",
+    "webpack-cli": "^3.1.2"
+  }
+}
