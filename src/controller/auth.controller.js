@@ -2,7 +2,7 @@
  * @Author: chengmac 
  * @Date: 2018-10-14 14:59:43 
  * @Last Modified by: chengmac
- * @Last Modified time: 2018-10-16 23:14:52
+ * @Last Modified time: 2018-10-26 23:37:45
  */
 
 const { handleRequest, handleError, handleSuccess } = require('../utils/handle');
@@ -15,7 +15,7 @@ const authCtrl = {};
 // md5编码
 const md5Decode = pwd => {
     return crypto.createHash('md5').update(pwd).digest('hex');
-};
+}
 
 //获取个人信息
 authCtrl.GET = (req, res) => {
@@ -26,10 +26,11 @@ authCtrl.GET = (req, res) => {
     .catch(err => {
         handleError({ res, err, message: '获取失败' });
     })
-};
+}
 
 // 登陆口令Token的生成
 authCtrl.POST = ({ body: { username, password }}, res) => {
+    // console.log('username,', username, 'password,', password)
     Auth.find({}, '-_id password username')
     .then((auth) => {
         // 产生token
@@ -40,7 +41,7 @@ authCtrl.POST = ({ body: { username, password }}, res) => {
         }, config.AUTH.jwtTokenSecret);
         // 不为空时
         if(auth.length != 0){
-            if (Object.is(md5Decode(password), auth.password) && Object.is(md5Decode(username), auth.username)) {
+            if (Object.is(md5Decode(password), auth[0].password) && Object.is(username, auth[0].username)) {
                 // 返回token
                 handleSuccess({ res, result: { token }, message: '登陆成功' });
             } else {
@@ -61,7 +62,7 @@ authCtrl.POST = ({ body: { username, password }}, res) => {
     .catch(err => {
         handleError({ res, err, message: '登录失败' });
     })
-};
+}
 
 // 修改权限和个人信息
 authCtrl.PUT = ({ body: auth }, res) => {
@@ -97,10 +98,10 @@ authCtrl.PUT = ({ body: auth }, res) => {
     .catch(err => {
         handleError({ res, err, message: '用户权限修改失败' });
     })
-};
+}
 
 // export
 module.exports = (req, res) => { 
     const controller = authCtrl;
     handleRequest({ req, res, controller })
-};
+}
