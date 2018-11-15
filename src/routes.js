@@ -2,7 +2,7 @@
  * @Author: chengmac 
  * @Date: 2018-10-14 14:56:24 
  * @Last Modified by: chengmac
- * @Last Modified time: 2018-10-31 22:09:11
+ * @Last Modified time: 2018-11-05 21:21:43
  */
 
 const controller = require('./controller');
@@ -38,6 +38,9 @@ const routes = app => {
 
     //文档相关
     app.all('/article', controller.article);
+
+    // 消息相关
+    app.all('/news', controller.news);
 } 
 
 module.exports = routes;

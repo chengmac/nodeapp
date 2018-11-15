@@ -2,7 +2,7 @@
  * @Author: chengmac 
  * @Date: 2018-10-14 14:59:43 
  * @Last Modified by: chengmac
- * @Last Modified time: 2018-10-26 23:37:45
+ * @Last Modified time: 2018-11-10 14:31:27
  */
 
 const { handleRequest, handleError, handleSuccess } = require('../utils/handle');
@@ -30,7 +30,6 @@ authCtrl.GET = (req, res) => {
 
 // 登陆口令Token的生成
 authCtrl.POST = ({ body: { username, password }}, res) => {
-    // console.log('username,', username, 'password,', password)
     Auth.find({}, '-_id password username')
     .then((auth) => {
         // 产生token
@@ -45,11 +44,11 @@ authCtrl.POST = ({ body: { username, password }}, res) => {
                 // 返回token
                 handleSuccess({ res, result: { token }, message: '登陆成功' });
             } else {
-                handleError({ res, message: '来者何人,报上名来!' });
+                handleError({ res, message: '来者何人,报上名来!', code: 400 });
             }
         } else {
             // 为空时
-            Auth.create({username: username, password: md5Decode(password), token: token})
+            new Auth({username: username, password: md5Decode(password), token: token}).save()
             .then((docs) => {
                 consola.ready("新账户和密码存储成功")
                 if(docs) {
@@ -60,43 +59,7 @@ authCtrl.POST = ({ body: { username, password }}, res) => {
         }
     })
     .catch(err => {
-        handleError({ res, err, message: '登录失败' });
-    })
-}
-
-// 修改权限和个人信息
-authCtrl.PUT = ({ body: auth }, res) => {
-
-    // 初始化
-    let { name, slogan, gravatar, password, new_password, rel_new_password } = auth;
-
-    // 验证密码
-    if (!!password && ((!new_password || !rel_new_password) || !Object.is(new_password, rel_new_password))) {
-        handleError({ res, message: '密码不一致或无效' });
-        return false;
-    };
-
-    if (!!password && [new_password, rel_new_password].includes(password)) {
-        handleError({ res, message: '新旧密码不可一致' });
-        return false;
-    };
-    
-    // 修改前查询验证
-    Auth.find({}, '_id name slogan gravatar password')
-    .then(([_auth = { password: md5Decode(config.AUTH.defaultPassword) }]) => {
-        if (!!password && !Object.is(_auth.password, md5Decode(password))) {
-            handleError({ res, message: '原密码不正确' }); 
-        } else {
-            if (!auth.password) delete auth.password;
-            if (auth.rel_new_password) auth.password = md5Decode(auth.rel_new_password);
-            return (_auth._id ? Auth.findByIdAndUpdate(_auth._id, auth, { new: true }) : new Auth(auth).save())
-        }
-    })
-    .then(({ name, slogan, gravatar } = auth) => {
-        handleSuccess({ res, result: { name, slogan, gravatar }, message: '用户权限修改成功' });
-    })
-    .catch(err => {
-        handleError({ res, err, message: '用户权限修改失败' });
+        handleError({ res, err, message: '登录失败', code: 400 });
     })
 }
 
