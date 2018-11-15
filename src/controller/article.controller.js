@@ -2,7 +2,7 @@
  * @Author: chengmac 
  * @Date: 2018-10-26 23:31:58 
  * @Last Modified by: chengmac
- * @Last Modified time: 2018-11-15 22:08:35
+ * @Last Modified time: 2018-11-15 22:36:57
  */
 
 const { handleRequest, handleError, handleSuccess } = require('../utils/handle');
@@ -50,7 +50,6 @@ articleCtrl.DELETE = ({body}, res) => {
         if(docs) {
             // 保存一条删除记录
             new News({name: body.title, content: '文章删除成功'}).save();
-            // new News({name: body.title, content: '文章删除成功'}).remove();
             handleSuccess({ res, result: docs, message: '删除成功' });
         }
     })
