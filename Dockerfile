@@ -5,7 +5,7 @@ WORKDIR /opt/nodeService
 
 # COPY必要文件
 COPY package.json .
-COPY src
+COPY src src
 
 # 安装服务必要的包
 RUN npm install --registry https://registry.npm.taobao.org
