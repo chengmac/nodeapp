@@ -5,6 +5,7 @@ WORKDIR /opt/nodeService
 
 # COPY必要文件
 COPY package.json .
+COPY package-lock.json .
 COPY src src
 
 # 安装服务必要的包
