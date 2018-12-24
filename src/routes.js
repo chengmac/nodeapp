@@ -2,7 +2,7 @@
  * @Author: chengmac 
  * @Date: 2018-10-14 14:56:24 
  * @Last Modified by: chengmac
- * @Last Modified time: 2018-12-21 06:43:44
+ * @Last Modified time: 2018-12-24 22:30:51
  */
 
 const controller = require('./controller');
@@ -10,7 +10,7 @@ const routes = app => {
     // 路由拦截器
     app.all('*', (req, res, next) => {
         // Set Header
-        const allowedOrigins = ['https://localhost', 'http://chengmac.top:5000'];
+        const allowedOrigins = ['http://localhost', 'https://api.chengmac.top'];
         const origin = req.headers.origin || '';
         if (allowedOrigins.includes(origin)) {
             res.setHeader('Access-Control-Allow-Origin', origin);
