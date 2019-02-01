@@ -2,7 +2,7 @@
  * @Author: chengmac 
  * @Date: 2018-10-14 14:59:43 
  * @Last Modified by: chengmac
- * @Last Modified time: 2018-11-10 14:31:27
+ * @Last Modified time: 2019-02-01 22:23:10
  */
 
 const { handleRequest, handleError, handleSuccess } = require('../utils/handle');
@@ -30,7 +30,7 @@ authCtrl.GET = (req, res) => {
 
 // 登陆口令Token的生成
 authCtrl.POST = ({ body: { username, password }}, res) => {
-    Auth.find({}, '-_id password username')
+    Auth.find({}, 'username password')
     .then((auth) => {
         // 产生token
         const token = jwt.sign({
@@ -38,25 +38,14 @@ authCtrl.POST = ({ body: { username, password }}, res) => {
             // 设置token有效期为7天
             exp: Math.floor(Date.now() / 1000) + (60 * 60 * 24 * 7)
         }, config.AUTH.jwtTokenSecret);
-        // 不为空时
-        if(auth.length != 0){
-            if (Object.is(md5Decode(password), auth[0].password) && Object.is(username, auth[0].username)) {
-                // 返回token
-                handleSuccess({ res, result: { token }, message: '登陆成功' });
-            } else {
-                handleError({ res, message: '来者何人,报上名来!', code: 400 });
-            }
+        // 验证账户和密码
+        if (Object.is(md5Decode(password), auth[0].password) && Object.is(username, auth[0].username)) {
+            // 返回token
+            handleSuccess({ res, result: { token }, message: '登陆成功' });
         } else {
-            // 为空时
-            new Auth({username: username, password: md5Decode(password), token: token}).save()
-            .then((docs) => {
-                consola.ready("新账户和密码存储成功")
-                if(docs) {
-                    // 返回token
-                    handleSuccess({ res, result: { token }, message: '登陆成功' });
-                }
-            });
+            handleError({ res, message: '来者何人,报上名来!', code: 400 });
         }
+        
     })
     .catch(err => {
         handleError({ res, err, message: '登录失败', code: 400 });
