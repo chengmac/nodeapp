@@ -2,7 +2,7 @@
  * @Author: chengmac 
  * @Date: 2018-10-26 23:17:41 
  * @Last Modified by: chengmac
- * @Last Modified time: 2019-03-01 23:15:10
+ * @Last Modified time: 2019-03-02 23:46:44
  */
 
 const mongoose = require('../mongodb').mongoose;
@@ -27,8 +27,12 @@ const articleSchema = new mongoose.Schema({
     // 文章是否公开  true 公开  false 私密
     overt: {type: Boolean, default: true},
 
-    // 时间
-    createTime: {type: Date, default: Date.now}
+    // 创建时间
+    createTime: {type: Date, default: Date.now},
+
+    // 更新时间
+    updateTime: {type: Date, default: ''}
+
 });
 // 分页插件
 articleSchema.plugin(mongoosePaginate);
