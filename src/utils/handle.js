@@ -1,6 +1,6 @@
 exports.handleRequest = ({ req, res, controller }) => {
-    const method = req.method;
-    controller[method] ? controller[method](req, res) : res.status(405).jsonp({ code: 0, message: '不支持该请求类型！' });
+    const path = req.path.slice(1);
+    controller[path] ? controller[path](req, res) : res.status(405).jsonp({ code: 0, message: '不支持该请求类型！' });
 };
 
 exports.handleError = ({ res, err = null, message = '请求失败', code }) => {

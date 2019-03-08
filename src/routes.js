@@ -2,7 +2,7 @@
  * @Author: chengmac 
  * @Date: 2018-10-14 14:56:24 
  * @Last Modified by: chengmac
- * @Last Modified time: 2018-12-26 22:51:43
+ * @Last Modified time: 2019-03-08 20:41:11
  */
 
 const controller = require('./controller');
@@ -34,13 +34,16 @@ const routes = app => {
     });
     
     //账户相关
-    app.all('/auth', controller.auth);
+    app.all(/auth/i, controller.auth);
 
     //文档相关
-    app.all('/article', controller.article);
+    app.all(/article/i, controller.article);
 
     // 消息相关
-    app.all('/news', controller.news);
+    app.all(/news/i, controller.news);
+
+    // 其他
+    // app.all(/2/i, controller.other);
 } 
 
 module.exports = routes;

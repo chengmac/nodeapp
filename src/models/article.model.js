@@ -2,7 +2,7 @@
  * @Author: chengmac 
  * @Date: 2018-10-26 23:17:41 
  * @Last Modified by: chengmac
- * @Last Modified time: 2019-03-02 23:46:44
+ * @Last Modified time: 2019-03-03 19:46:47
  */
 
 const mongoose = require('../mongodb').mongoose;
@@ -22,7 +22,7 @@ const articleSchema = new mongoose.Schema({
     content: {type: String, default: ''},
 
     // 类型 0为原创  1为转载
-    type: {type: String, default: 0},
+    type: {type: String, default: '0'},
 
     // 文章是否公开  true 公开  false 私密
     overt: {type: Boolean, default: true},

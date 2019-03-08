@@ -2,7 +2,7 @@
  * @Author: chengmac 
  * @Date: 2018-10-14 14:59:43 
  * @Last Modified by: chengmac
- * @Last Modified time: 2019-02-01 22:23:10
+ * @Last Modified time: 2019-03-03 18:03:30
  */
 
 const { handleRequest, handleError, handleSuccess } = require('../utils/handle');
@@ -17,19 +17,8 @@ const md5Decode = pwd => {
     return crypto.createHash('md5').update(pwd).digest('hex');
 }
 
-//获取个人信息
-authCtrl.GET = (req, res) => {
-    Auth.find({}, '-_id name slogan gravatar')
-    .then(([result = {}]) => {
-        handleSuccess({ res, result, message: '用户资料获取成功' });
-    })
-    .catch(err => {
-        handleError({ res, err, message: '获取失败' });
-    })
-}
-
 // 登陆口令Token的生成
-authCtrl.POST = ({ body: { username, password }}, res) => {
+authCtrl.authLogin = ({ body: { username, password }}, res) => {
     Auth.find({}, 'username password')
     .then((auth) => {
         // 产生token
