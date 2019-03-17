@@ -2,7 +2,7 @@
  * @Author: chengmac 
  * @Date: 2018-10-26 23:31:58 
  * @Last Modified by: chengmac
- * @Last Modified time: 2019-03-08 22:07:47
+ * @Last Modified time: 2019-03-17 22:38:51
  */
 
 const { handleRequest, handleError, handleSuccess } = require('../utils/handle');
@@ -25,18 +25,34 @@ articleCtrl.articleSave = ({body}, res) => {
                     Classify.create({name: body.classify, articleId: docs._id});
                 } else {
                     // 当分类相同时，存入对应文章id
-                    Classify.updateOne({name: body.classify}, {$addToSet: {articleId: query[0]._id}});
+                    Classify.updateOne({name: docs.classify}, {$addToSet: {articleId: docs._id}}).then(success => {
+                        console.log(success)
+                    });
                 }
             });
-            // 查找是否已存在的标签
-            Label.find({name: body.label}).then(query => {
-                if(query.length === 0) {
-                    Label.create({name: body.label, articleId: docs._id});
-                } else {
-                    // 当标签相同时，存入对应文章id
-                    Label.updateOne({name: body.label}, {$addToSet: {articleId: query[0]._id}});
-                }
-            });
+            // 判断标签是否为多个
+            if(body.label.length > 1) {
+                body.label.forEach(element => {
+                    Label.find({name: element}).then(query => {
+                        if(query.length === 0) {
+                            Label.create({name: element, articleId: docs._id});
+                        } else {
+                            // 当标签相同时，存入对应文章id
+                            Label.updateOne({name: element}, {$addToSet: {articleId: docs._id}});
+                        }
+                    });
+                });
+            } else {
+                // 查找是否已存在的标签
+                Label.find({name: body.label}).then(query => {
+                    if(query.length === 0) {
+                        Label.create({name: body.label, articleId: docs._id});
+                    } else {
+                        // 当标签相同时，存入对应文章id
+                        Label.updateOne({name: docs.label}, {$addToSet: {articleId: docs._id}});
+                    }
+                });
+            }
             handleSuccess({ res, result: null, message: '发布成功' });
         }
     })
