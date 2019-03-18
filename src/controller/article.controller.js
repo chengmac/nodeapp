@@ -2,7 +2,7 @@
  * @Author: chengmac 
  * @Date: 2018-10-26 23:31:58 
  * @Last Modified by: chengmac
- * @Last Modified time: 2019-03-17 22:38:51
+ * @Last Modified time: 2019-03-18 22:37:12
  */
 
 const { handleRequest, handleError, handleSuccess } = require('../utils/handle');
@@ -38,7 +38,9 @@ articleCtrl.articleSave = ({body}, res) => {
                             Label.create({name: element, articleId: docs._id});
                         } else {
                             // 当标签相同时，存入对应文章id
-                            Label.updateOne({name: element}, {$addToSet: {articleId: docs._id}});
+                            Label.updateOne({name: element}, {$addToSet: {articleId: docs._id}}).then(success => {
+                                console.log(success)
+                            });;
                         }
                     });
                 });
