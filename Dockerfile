@@ -1,11 +1,10 @@
 FROM node
 
 # 工作目录
-WORKDIR /opt/nodeService
+WORKDIR /opt/nodeApp
 
 # COPY必要文件
 COPY package.json .
-COPY package-lock.json .
 COPY src src
 
 # 安装服务必要的包
