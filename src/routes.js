@@ -2,7 +2,7 @@
  * @Author: chengmac 
  * @Date: 2018-10-14 14:56:24 
  * @Last Modified by: chengmac
- * @Last Modified time: 2019-03-20 19:31:00
+ * @Last Modified time: 2019-03-20 21:30:48
  */
 
 const controller = require('./controller');
@@ -10,7 +10,7 @@ const routes = app => {
     // 路由拦截器
     app.all('*', (req, res, next) => {
         // Set Header
-        const allowedOrigins = ['http://localhost:3000', 'https://api.chengmac.top'];
+        const allowedOrigins = ['http://localhost:3000', 'https://admin.chengmac.top'];
         const origin = req.headers.origin || '';
         if (allowedOrigins.includes(origin)) {
             res.setHeader('Access-Control-Allow-Origin', origin);
@@ -19,7 +19,7 @@ const routes = app => {
         res.header('Access-Control-Allow-Methods', 'PUT,PATCH,POST,GET,DELETE,OPTIONS');
         res.header('Access-Control-Max-Age', '1728000');
         res.header('Content-Type', 'application/json;charset=utf-8');
-        res.header('X-Powered-By', 'Nodepress 1.0.0');
+        res.header('X-Powered-By', 'nodeapp 1.0.0');
 
         // OPTIONS
         if (req.method === 'OPTIONS') {
