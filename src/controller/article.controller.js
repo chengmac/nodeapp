@@ -2,7 +2,7 @@
  * @Author: chengmac 
  * @Date: 2018-10-26 23:31:58 
  * @Last Modified by: chengmac
- * @Last Modified time: 2019-03-18 22:37:12
+ * @Last Modified time: 2019-03-31 13:09:22
  */
 
 const { handleRequest, handleError, handleSuccess } = require('../utils/handle');
@@ -15,7 +15,6 @@ const articleCtrl = {};
 // 保存文章
 articleCtrl.articleSave = ({body}, res) => {
     Article.create(body).then(docs => {
-        consola.ready("发布成功")
         if(docs) {
             // 保存一条新增记录
             News.create({name: body.title, content: '文章发布成功'});
@@ -67,7 +66,6 @@ articleCtrl.articleSave = ({body}, res) => {
 articleCtrl.article = (req, res) => {
     const { id } = req.query;
     Article.findById(id).then(docs => {
-        consola.ready("查询成功");
         if(docs) {
             handleSuccess({ res, result: docs, message: '查询成功' });
         }
@@ -82,7 +80,6 @@ articleCtrl.articleList = (req, res) => {
     const { page } = req.query;
     const options = {page};
     Article.paginate({}, options).then(docs => {
-        consola.ready("查询成功");
         if(docs) {
             handleSuccess({ res, result: docs, message: '查询成功' });
         }
@@ -96,7 +93,6 @@ articleCtrl.articleList = (req, res) => {
 articleCtrl.articleDelete = ({body}, res) => {
     body._id.map(id => {
         Article.deleteOne({_id: id}).then(docs => {
-            consola.ready("删除成功");
             if(docs) {
                 // 保存一条删除记录
                 News.create({name: body.title, content: '文章删除成功'});

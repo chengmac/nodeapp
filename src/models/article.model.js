@@ -2,7 +2,7 @@
  * @Author: chengmac 
  * @Date: 2018-10-26 23:17:41 
  * @Last Modified by: chengmac
- * @Last Modified time: 2019-03-03 19:46:47
+ * @Last Modified time: 2019-04-16 23:21:52
  */
 
 const mongoose = require('../mongodb').mongoose;
@@ -10,7 +10,7 @@ const mongoosePaginate = require('mongoose-paginate');
 
 const articleSchema = new mongoose.Schema({
     // 标题
-    title: { type: String, default: '' },
+    title: { type: String, default: ''},
 
     // 分类
     classify: { type: String, default: '' },
@@ -31,8 +31,12 @@ const articleSchema = new mongoose.Schema({
     createTime: {type: Date, default: Date.now},
 
     // 更新时间
-    updateTime: {type: Date, default: ''}
+    updateTime: {type: Date, default: ''},
 
+    //关键字
+    keywords: { type: String}
+}, {
+    versionKey: false // 取消__v字段
 });
 // 分页插件
 articleSchema.plugin(mongoosePaginate);

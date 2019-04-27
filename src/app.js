@@ -1,12 +1,11 @@
 const express = require('express');
 const http = require('http');
 const app = express();
-const cookieParser = require('cookie-parser');
 const bodyParser = require('body-parser');
-const consola = require('consola');
+const log4js = require('./config');
+log4js.useLogger(app);
 
 // app modules
-
 const mongodb = require('./mongodb');
 const config = require('./config');
 const routes = require('./routes');
@@ -23,6 +22,6 @@ routes(app);
 
 // 启动服务
 http.createServer(app).listen(app.get('port'), () => {
-	consola.start(`server running！port at ${app.get('port')}...`);
+	console.log(`server running！port at ${app.get('port')}...`);
 });
 

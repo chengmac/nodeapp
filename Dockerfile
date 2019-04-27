@@ -13,5 +13,5 @@ RUN npm install --registry https://registry.npm.taobao.org
 # 暴露端口
 EXPOSE 5000
 
-CMD ["npm","run","dev"]
+CMD ["npm","run","bulid"]
 

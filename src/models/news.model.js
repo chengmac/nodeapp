@@ -2,7 +2,7 @@
  * @Author: chengmac 
  * @Date: 2018-11-05 20:14:13 
  * @Last Modified by: chengmac
- * @Last Modified time: 2019-03-03 20:56:49
+ * @Last Modified time: 2019-04-14 13:12:40
  */
 
 const mongoose = require('../mongodb').mongoose;
@@ -14,6 +14,8 @@ const newsSchema = new mongoose.Schema({
     // 是否已读
     isRead: {type: Boolean, default: false}
 
+}, {
+    versionKey: false // 取消__v字段
 });
 const News = mongoose.model('News', newsSchema);
 
