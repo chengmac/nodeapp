@@ -2,7 +2,7 @@
  * @Author: chengmac 
  * @Date: 2018-10-14 14:56:24 
  * @Last Modified by: chengmac
- * @Last Modified time: 2019-03-31 16:39:59
+ * @Last Modified time: 2019-04-28 22:00:59
  */
 
 const controller = require('./controller');
@@ -19,7 +19,7 @@ const routes = app => {
     app.all(/article/i, controller.article);
 
     // 消息相关
-    app.all(/news/i, controller.news);
+    app.all(/news/i, controller.message);
 
     // 其他
     // app.all(/2/i, controller.other);

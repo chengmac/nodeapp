@@ -2,11 +2,11 @@
  * @Author: chengmac 
  * @Date: 2018-11-05 20:14:13 
  * @Last Modified by: chengmac
- * @Last Modified time: 2019-04-14 13:12:40
+ * @Last Modified time: 2019-04-28 21:53:38
  */
 
 const mongoose = require('../mongodb').mongoose;
-const newsSchema = new mongoose.Schema({
+const messageSchema = new mongoose.Schema({
     // 名称
     name: {type: String, default: ''},
     // 创建时间
@@ -17,6 +17,6 @@ const newsSchema = new mongoose.Schema({
 }, {
     versionKey: false // 取消__v字段
 });
-const News = mongoose.model('News', newsSchema);
+const Message = mongoose.model('Message', messageSchema);
 
-module.exports = News;
+module.exports = Message;
