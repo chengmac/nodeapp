@@ -2,10 +2,10 @@
  * @Author: chengmac 
  * @Date: 2018-10-14 14:56:24 
  * @Last Modified by: chengmac
- * @Last Modified time: 2019-04-28 22:00:59
+ * @Last Modified time: 2019-05-28 23:13:20
  */
 
-const controller = require('./controller');
+const controller = require('../controller');
 const interceptor = require('./interceptor');
 
 const routes = app => {

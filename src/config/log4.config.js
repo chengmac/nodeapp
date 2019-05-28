@@ -1,30 +1,5 @@
-/*
- * @Author: chengmac 
- * @Date: 2018-10-14 14:56:11 
- * @Last Modified by: chengmac
- * @Last Modified time: 2019-04-16 23:22:20
- */
-
-// 访问端口
-exports.APP = {
-    port: 5000
-};
-
-exports.MONGODB = {
-    // 根据环境变量来切换数据库地址
-    uri: process.env.NODE_ENV === "development" ? 
-    "mongodb://39.105.165.222:27017/nodeService" :
-    "mongodb://mongo:27017/nodeService"
-};
-
-//
-exports.AUTH = {
-    jwtTokenSecret: 'node',
-    defaultPassword: 'javascript',
-    defaultUsername: 'chengmac'
-};
-
 const log4js = require('log4js');
+
 // log4js 配置
 log4js.configure({
     replaceConsole: true,
@@ -58,11 +33,11 @@ log4js.configure({
     }
 });
 
-exports.getLogger = function (name) {
+exports.setLogger = function (name) {
     return log4js.getLogger(name || 'default')
 }
 //用来与express结合
-exports.useLogger = function (app, ) {
+exports.useLogger = function (app) {
     app.use(log4js.connectLogger(log4js.getLogger('default'), {
         format: '[:remote-addr :method :url :status :response-timems][:referrer HTTP/:http-version :user-agent]'//自定义输出格式
     }))

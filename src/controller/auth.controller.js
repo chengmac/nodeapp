@@ -2,12 +2,13 @@
  * @Author: chengmac 
  * @Date: 2018-10-14 14:59:43 
  * @Last Modified by: chengmac
- * @Last Modified time: 2019-04-13 13:41:19
+ * @Last Modified time: 2019-05-28 23:21:51
  */
 const { handleRequest, handleError, handleSuccess } = require('../utils/handle');
 const Auth = require('../models/auth.model');
 const jwt = require('jsonwebtoken');
-const config = require('../config');
+const globalConfig = require('../config/global.config');
+const Logger = require('../config/log4.config');
 const crypto = require('crypto');
 const authCtrl = {};
 
@@ -23,13 +24,11 @@ authCtrl.authLogin = ({ body: { username, password }}, res) => {
         const token = jwt.sign({
             data: {
                 name: username,
-                admin: username === config.AUTH.defaultUsername ? true : false //默认用户为admin
+                admin: username === globalConfig.AUTH.defaultUsername ? true : false //默认用户为admin
             },
             // 设置token有效期为7天
             exp: Math.floor(Date.now() / 1000) + (60 * 60 * 24 * 7)
-        }, config.AUTH.jwtTokenSecret);
-        console.log(auth)
-        console.log(md5Decode(password))
+        }, globalConfig.AUTH.jwtTokenSecret);
         // 判断登录账户是否已存在数据库中
         if(auth.length !== 0) {
             // 验证账户和密码
@@ -42,10 +41,10 @@ authCtrl.authLogin = ({ body: { username, password }}, res) => {
         } else {
             Auth.create({username: username, password: md5Decode(password)}).then((create, err) => {
                 if(create.length !== 0) {
-                    config.getLogger().info(username + '用户创建成功');
+                    Logger.getLogger().info(username + '用户创建成功');
                     handleSuccess({ res, result: { token }, message: '登陆成功' });
                 } else {
-                    config.getLogger('err').err(username + '用户创建失败');
+                    Logger.getLogger('err').err(username + '用户创建失败');
                     handleError({ res, err, message: '登录失败', code: 400 });
                 }
             });

@@ -2,12 +2,12 @@
  * @Author: chengmac 
  * @Date: 2018-10-26 23:31:58 
  * @Last Modified by: chengmac
- * @Last Modified time: 2019-03-31 13:09:22
+ * @Last Modified time: 2019-05-28 23:03:52
  */
 
 const { handleRequest, handleError, handleSuccess } = require('../utils/handle');
 const Article = require('../models/article.model');
-const News = require('../models/news.model');
+const Message = require('../models/message.model');
 const Classify = require('../models/classify.model');
 const Label = require('../models/label.model');
 const articleCtrl = {};
@@ -17,7 +17,7 @@ articleCtrl.articleSave = ({body}, res) => {
     Article.create(body).then(docs => {
         if(docs) {
             // 保存一条新增记录
-            News.create({name: body.title, content: '文章发布成功'});
+            Message.create({name: body.title, content: '文章发布成功'});
             // 查找是否已存在的分类
             Classify.find({name: body.classify}).then(query => {
                 if(query.length === 0) {
@@ -39,7 +39,7 @@ articleCtrl.articleSave = ({body}, res) => {
                             // 当标签相同时，存入对应文章id
                             Label.updateOne({name: element}, {$addToSet: {articleId: docs._id}}).then(success => {
                                 console.log(success)
-                            });;
+                            });
                         }
                     });
                 });
@@ -91,18 +91,14 @@ articleCtrl.articleList = (req, res) => {
 
 // 删除某一个文章
 articleCtrl.articleDelete = ({body}, res) => {
-    body._id.map(id => {
-        Article.deleteOne({_id: id}).then(docs => {
-            if(docs) {
-                // 保存一条删除记录
-                News.create({name: body.title, content: '文章删除成功'});
-                handleSuccess({ res, result: docs, message: '删除成功' });
-            }
-        })
-        .catch(err => {
-            handleError({res, err, message: '删除失败', code: 400});
-        });
+    Article.deleteMany({_id: {$in: body._id}}).then(docs => {
+        if(docs) {
+            handleSuccess({ res, result: docs, message: '删除成功' });
+        }
     })
+    .catch(err => {
+        handleError({res, err, message: '删除失败', code: 400});
+    });
 }
 
 articleCtrl.getArticleAllClassify = (req, res) => {

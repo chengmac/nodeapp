@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "dev": "export NODE_ENV=development && node src/app.js",
+    "dev": "export NODE_ENV=development && nodemon src/app.js",
     "build": "export NODE_ENV=production && node src/app.js"
   },
   "repository": {
@@ -29,5 +29,8 @@
     "morgan": "^1.9.1",
     "qiniu": "^7.2.1"
   },
-  "devDependencies": {}
+  "devDependencies": {
+    "eslint": "^5.16.0",
+    "nodemon": "^1.19.1"
+  }
 }

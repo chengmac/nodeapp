@@ -2,11 +2,11 @@
  * @Author: chengmac 
  * @Date: 2018-10-14 15:07:53 
  * @Last Modified by: chengmac
- * @Last Modified time: 2019-04-14 13:12:14
+ * @Last Modified time: 2019-05-28 23:18:49
  */
 
 const mongoose = require('../mongodb').mongoose;
-const config = require('../config');
+const globalConfig = require('../config/global.config');
 const authSchema = new mongoose.Schema({
     // 名字
     name: { type: String, default: '' },
@@ -18,10 +18,10 @@ const authSchema = new mongoose.Schema({
     gravatar: { type: String, default: '' },
 
     // 用户名
-    username: { type: String, default: config.AUTH.defaultUsername },
+    username: { type: String, default: globalConfig.AUTH.defaultUsername },
 
     // 密码
-    password: { type: String, default: config.AUTH.defaultPassword }
+    password: { type: String, default: globalConfig.AUTH.defaultPassword }
 }, {
     versionKey: false // 取消__v字段
 });
