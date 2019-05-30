@@ -2,7 +2,7 @@
  * @Author: chengmac 
  * @Date: 2018-11-05 20:27:13 
  * @Last Modified by: chengmac
- * @Last Modified time: 2019-05-30 21:17:24
+ * @Last Modified time: 2019-05-30 22:04:10
  */
 
 const { handleError, handleSuccess } = require('../utils/handle');
@@ -10,7 +10,6 @@ const Message = require('../models/message.model');
 const messageCtrl = {};
 
 messageCtrl.get = (req, res) => {
-    console.log(req)
     Message.find({}).then(data => {
         if(data) {
             handleSuccess({res, result: data, message: '获取成功'});

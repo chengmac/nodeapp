@@ -2,7 +2,7 @@
  * @Author: chengmac 
  * @Date: 2018-10-14 14:56:24 
  * @Last Modified by: chengmac
- * @Last Modified time: 2019-05-30 21:26:24
+ * @Last Modified time: 2019-05-30 22:02:42
  */
 
 const express = require('express');
@@ -41,7 +41,7 @@ const auth = () => {
 }
 // 文章接口分发
 const article = () => {
-    router.get('/', controller.article.id);
+    router.get('/:id', controller.article.id);
     router.get('/list', controller.article.list);
     router.post('/save', controller.article.save);
     router.delete('/batchDelete', controller.article.batchDelete);

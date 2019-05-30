@@ -2,7 +2,7 @@
  * @Author: chengmac 
  * @Date: 2018-10-26 23:31:58 
  * @Last Modified by: chengmac
- * @Last Modified time: 2019-05-30 20:56:09
+ * @Last Modified time: 2019-05-30 22:06:38
  */
 
 const { handleError, handleSuccess } = require('../utils/handle');
@@ -64,8 +64,8 @@ articleCtrl.save = ({body}, res) => {
 
 // 获取单个文章
 articleCtrl.id = (req, res) => {
-    const { id } = req.query;
-    Article.findById(id).then(docs => {
+    console.log(req.params.id)
+    Article.findById(req.params.id).then(docs => {
         if(docs) {
             handleSuccess({ res, result: docs, message: '查询成功' });
         }
