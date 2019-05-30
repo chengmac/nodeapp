@@ -2,10 +2,10 @@
  * @Author: chengmac 
  * @Date: 2018-10-26 23:31:58 
  * @Last Modified by: chengmac
- * @Last Modified time: 2019-05-28 23:03:52
+ * @Last Modified time: 2019-05-30 20:56:09
  */
 
-const { handleRequest, handleError, handleSuccess } = require('../utils/handle');
+const { handleError, handleSuccess } = require('../utils/handle');
 const Article = require('../models/article.model');
 const Message = require('../models/message.model');
 const Classify = require('../models/classify.model');
@@ -13,7 +13,7 @@ const Label = require('../models/label.model');
 const articleCtrl = {};
 
 // 保存文章
-articleCtrl.articleSave = ({body}, res) => {
+articleCtrl.save = ({body}, res) => {
     Article.create(body).then(docs => {
         if(docs) {
             // 保存一条新增记录
@@ -63,7 +63,7 @@ articleCtrl.articleSave = ({body}, res) => {
 }
 
 // 获取单个文章
-articleCtrl.article = (req, res) => {
+articleCtrl.id = (req, res) => {
     const { id } = req.query;
     Article.findById(id).then(docs => {
         if(docs) {
@@ -76,7 +76,7 @@ articleCtrl.article = (req, res) => {
 }
 
 // 获取所有文章
-articleCtrl.articleList = (req, res) => {
+articleCtrl.list = (req, res) => {
     const { page } = req.query;
     const options = {page};
     Article.paginate({}, options).then(docs => {
@@ -89,8 +89,8 @@ articleCtrl.articleList = (req, res) => {
     });
 }
 
-// 删除某一个文章
-articleCtrl.articleDelete = ({body}, res) => {
+// 批量删除文章
+articleCtrl.batchDelete = ({body}, res) => {
     Article.deleteMany({_id: {$in: body._id}}).then(docs => {
         if(docs) {
             handleSuccess({ res, result: docs, message: '删除成功' });
@@ -101,23 +101,4 @@ articleCtrl.articleDelete = ({body}, res) => {
     });
 }
 
-articleCtrl.getArticleAllClassify = (req, res) => {
-    Classify.find().then(data => {
-        if(data) {
-            handleSuccess({res, result: data, message: '获取分类成功'});
-        }
-    })
-}
-
-articleCtrl.getArticleAllLabel = (req, res) => {
-    Label.find().then(data => {
-        if(data) {
-            handleSuccess({res, result: data, message: '获取标签成功'});
-        }
-    })
-}
-
-module.exports = (req, res) => {
-    const controller = articleCtrl;
-    handleRequest({ req, res, controller })
-};
+module.exports = articleCtrl

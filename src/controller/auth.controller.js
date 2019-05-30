@@ -2,13 +2,12 @@
  * @Author: chengmac 
  * @Date: 2018-10-14 14:59:43 
  * @Last Modified by: chengmac
- * @Last Modified time: 2019-05-28 23:21:51
+ * @Last Modified time: 2019-05-30 20:13:11
  */
-const { handleRequest, handleError, handleSuccess } = require('../utils/handle');
+const { handleError, handleSuccess } = require('../utils/handle');
 const Auth = require('../models/auth.model');
 const jwt = require('jsonwebtoken');
 const globalConfig = require('../config/global.config');
-const Logger = require('../config/log4.config');
 const crypto = require('crypto');
 const authCtrl = {};
 
@@ -18,7 +17,7 @@ const md5Decode = pwd => {
 }
 
 // 登陆口令Token的生成
-authCtrl.authLogin = ({ body: { username, password }}, res) => {
+authCtrl.login = ({ body: { username, password }}, res) => {
     Auth.find({}, 'username password').then((auth) => {
         // 产生token
         const token = jwt.sign({
@@ -38,17 +37,18 @@ authCtrl.authLogin = ({ body: { username, password }}, res) => {
             } else {
                 handleError({ res, message: '来者何人,报上名来!', code: 400 });
             }
-        } else {
-            Auth.create({username: username, password: md5Decode(password)}).then((create, err) => {
-                if(create.length !== 0) {
-                    Logger.getLogger().info(username + '用户创建成功');
-                    handleSuccess({ res, result: { token }, message: '登陆成功' });
-                } else {
-                    Logger.getLogger('err').err(username + '用户创建失败');
-                    handleError({ res, err, message: '登录失败', code: 400 });
-                }
-            });
-        }
+        } 
+        // else {
+        //     Auth.create({username: username, password: md5Decode(password)}).then((create, err) => {
+        //         if(create.length !== 0) {
+        //             Logger.getLogger().info(username + '用户创建成功');
+        //             handleSuccess({ res, result: { token }, message: '登陆成功' });
+        //         } else {
+        //             Logger.getLogger('err').err(username + '用户创建失败');
+        //             handleError({ res, err, message: '登录失败', code: 400 });
+        //         }
+        //     });
+        // }
         
     })
     .catch(err => {
@@ -57,7 +57,4 @@ authCtrl.authLogin = ({ body: { username, password }}, res) => {
 }
 
 // export
-module.exports = (req, res) => { 
-    const controller = authCtrl;
-    handleRequest({ req, res, controller })
-}
+module.exports = authCtrl

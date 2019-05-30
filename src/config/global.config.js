@@ -2,7 +2,7 @@
  * @Author: chengmac 
  * @Date: 2018-10-14 14:56:11 
  * @Last Modified by: chengmac
- * @Last Modified time: 2019-05-28 23:05:08
+ * @Last Modified time: 2019-05-29 21:56:11
  */
 
 // 访问端口
@@ -26,12 +26,14 @@ exports.AUTH = {
 
 // 七牛云上传配置
 exports.QINIU = {
-    accessKey : '输入你的key',
-    secretKey : '输入你的secretKey',
-    bucket_lists: [
-        {'test-demo' : '对应的域名链接'},
-        {'test-demo1' : '对应的域名链接'}
-    ],
-    returnBody: '{"key":"$(key)","hash":"$(etag)","fsize":$(fsize),"bucket":"$(bucket)","name":"$(x:name)"}'
+    keys: {
+        accessKey : 'MAGxw6UyD_x6YwDmJ0S3DA2AE45hn9ihrE01PVgV',
+        secretKey : '1EB_HcgJis5iw71YFPftqv8Q_VK6eGdT8N2jQFuJ',
+    },
+    options: {
+        // scope: bucket,
+        returnBody: '{"key":"$(key)","hash":"$(etag)","fsize":$(fsize),"bucket":"$(bucket)","name":"$(x:name)"}',
+        callbackBodyType: 'application/json'
+    }
 };
 
