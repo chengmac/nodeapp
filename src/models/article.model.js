@@ -2,7 +2,7 @@
  * @Author: chengmac 
  * @Date: 2018-10-26 23:17:41 
  * @Last Modified by: chengmac
- * @Last Modified time: 2019-04-16 23:21:52
+ * @Last Modified time: 2019-08-01 21:23:40
  */
 
 const mongoose = require('../mongodb').mongoose;
@@ -34,7 +34,14 @@ const articleSchema = new mongoose.Schema({
     updateTime: {type: Date, default: ''},
 
     //关键字
-    keywords: { type: String}
+    keywords: { type: String},
+
+    // 文章是否发布 true 发布
+    release: {type: Boolean, default: true},
+
+    // 文章封面大图
+    coverUrl: {type: String, default: ''},
+
 }, {
     versionKey: false // 取消__v字段
 });

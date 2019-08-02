@@ -2,7 +2,7 @@
  * @Author: chengmac 
  * @Date: 2018-10-14 14:56:11 
  * @Last Modified by: chengmac
- * @Last Modified time: 2019-05-29 21:56:11
+ * @Last Modified time: 2019-08-01 21:04:26
  */
 
 // 访问端口
@@ -31,9 +31,7 @@ exports.QINIU = {
         secretKey : '1EB_HcgJis5iw71YFPftqv8Q_VK6eGdT8N2jQFuJ',
     },
     options: {
-        // scope: bucket,
-        returnBody: '{"key":"$(key)","hash":"$(etag)","fsize":$(fsize),"bucket":"$(bucket)","name":"$(x:name)"}',
-        callbackBodyType: 'application/json'
+        scope: 'chengmac'
     }
 };
 

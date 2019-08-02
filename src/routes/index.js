@@ -2,7 +2,7 @@
  * @Author: chengmac 
  * @Date: 2018-10-14 14:56:24 
  * @Last Modified by: chengmac
- * @Last Modified time: 2019-05-30 22:02:42
+ * @Last Modified time: 2019-08-01 21:48:25
  */
 
 const express = require('express');
@@ -23,15 +23,8 @@ const routes = app => {
     //文章相关
     app.use('/article', article());
 
-
     // 图片上传
     app.use('/upload', upload());
-
-    // 文章分类
-    app.use('/classify', classify());
-
-    // 文章标签
-    app.use('/tag', tag());
 }
 
 // 账户接口分发
@@ -41,8 +34,10 @@ const auth = () => {
 }
 // 文章接口分发
 const article = () => {
-    router.get('/:id', controller.article.id);
+    router.get('/single', controller.article.single);
     router.get('/list', controller.article.list);
+    router.get('/classify', controller.other.classify);
+    router.get('/label', controller.other.label);
     router.post('/save', controller.article.save);
     router.delete('/batchDelete', controller.article.batchDelete);
     return router;
@@ -57,19 +52,7 @@ const message = () => {
 
 // 文章接口分发
 const upload = () => {
-    router.post('/image', controller.upload.image);
-    return router;
-}
-
-// 分类
-const classify = () => {
-    router.get('/', controller.other.classify);
-    return router;
-}
-
-// 标签
-const tag = () => {
-    router.get('/', controller.other.label);
+    router.get('/getToken', controller.upload.getToken);
     return router;
 }
 

@@ -2,7 +2,7 @@
  * @Author: chengmac 
  * @Date: 2018-10-26 23:31:58 
  * @Last Modified by: chengmac
- * @Last Modified time: 2019-05-30 22:06:38
+ * @Last Modified time: 2019-06-17 21:25:32
  */
 
 const { handleError, handleSuccess } = require('../utils/handle');
@@ -63,9 +63,9 @@ articleCtrl.save = ({body}, res) => {
 }
 
 // 获取单个文章
-articleCtrl.id = (req, res) => {
-    console.log(req.params.id)
-    Article.findById(req.params.id).then(docs => {
+articleCtrl.single = (req, res) => {
+    const { id } = req.query;
+    Article.findById(id).then(docs => {
         if(docs) {
             handleSuccess({ res, result: docs, message: '查询成功' });
         }
@@ -77,7 +77,7 @@ articleCtrl.id = (req, res) => {
 
 // 获取所有文章
 articleCtrl.list = (req, res) => {
-    const { page } = req.query;
+    const { page} = req.query;
     const options = {page};
     Article.paginate({}, options).then(docs => {
         if(docs) {

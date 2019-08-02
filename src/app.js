@@ -2,13 +2,13 @@ const express = require('express');
 const http = require('http');
 const app = express();
 const bodyParser = require('body-parser');
-const log4js = require('./config/log4.config');
-log4js.useLogger(app);
 
 // app modules
 const mongodb = require('./mongodb');
 const globalConfig = require('./config/global.config');
 const routes = require('./routes');
+const log4js = require('./config/log4.config');
+log4js.useLogger(app);
 
 app.set('port', globalConfig.APP.port);
 app.use(bodyParser.json({limit: '1mb'}));// 设置参数的大小
