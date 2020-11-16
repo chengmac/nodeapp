@@ -2,7 +2,7 @@
  * @Author: chengmac 
  * @Date: 2019-03-08 20:31:57 
  * @Last Modified by: chengmac
- * @Last Modified time: 2019-06-17 22:41:58
+ * @Last Modified time: 2019-08-02 19:05:03
  */
 
 const { handleError, handleSuccess } = require('../utils/handle');
@@ -20,7 +20,7 @@ otherCtrl.classify = (req, res) => {
 }
 
 otherCtrl.label = (req, res) => {
-    Label.find().then(data => {
+    Label.find({}).then(data => {
         if(data) {
             handleSuccess({res, result: data, message: '获取标签成功'});
         }

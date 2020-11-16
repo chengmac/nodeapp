@@ -2,7 +2,7 @@
  * @Author: chengmac 
  * @Date: 2018-10-14 14:56:11 
  * @Last Modified by: chengmac
- * @Last Modified time: 2019-08-01 21:04:26
+ * @Last Modified time: 2020-11-08 20:27:16
  */
 
 // 访问端口
@@ -13,8 +13,8 @@ exports.APP = {
 exports.MONGODB = {
     // 根据环境变量来切换数据库地址
     uri: process.env.NODE_ENV === "development" ? 
-    "mongodb://39.105.165.222:27017/nodeService" :
-    "mongodb://mongo:27017/nodeService"
+    "mongodb://120.53.236.75:27017/nodeService" :
+    "mongodb://120.53.236.75:27017/nodeService"
 };
 
 //
@@ -34,4 +34,7 @@ exports.QINIU = {
         scope: 'chengmac'
     }
 };
+
+// 博客默认分类
+exports.classify = ['前端', '服务端', '数据库', '其他']
 

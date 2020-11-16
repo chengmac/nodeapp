@@ -2,12 +2,12 @@
  * @Author: chengmac 
  * @Date: 2018-10-14 15:07:53 
  * @Last Modified by: chengmac
- * @Last Modified time: 2019-05-28 23:18:49
+ * @Last Modified time: 2020-11-14 09:54:10
  */
 
 const mongoose = require('../mongodb').mongoose;
 const globalConfig = require('../config/global.config');
-const authSchema = new mongoose.Schema({
+const userSchema = new mongoose.Schema({
     // 名字
     name: { type: String, default: '' },
 
@@ -25,5 +25,6 @@ const authSchema = new mongoose.Schema({
 }, {
     versionKey: false // 取消__v字段
 });
-const Auth = mongoose.model('Auth', authSchema);
-module.exports = Auth;
+const User = mongoose.model('User', userSchema);
+User();
+module.exports = User;

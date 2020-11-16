@@ -2,7 +2,7 @@
  * @Author: chengmac 
  * @Date: 2018-10-26 23:17:41 
  * @Last Modified by: chengmac
- * @Last Modified time: 2019-08-01 21:23:40
+ * @Last Modified time: 2020-11-15 22:52:41
  */
 
 const mongoose = require('../mongodb').mongoose;
@@ -13,7 +13,7 @@ const articleSchema = new mongoose.Schema({
     title: { type: String, default: ''},
 
     // 分类
-    classify: { type: String, default: '' },
+    category: { type: String, default: '' },
 
     // 标签
     label: { type: Array, default: [] },
@@ -25,7 +25,7 @@ const articleSchema = new mongoose.Schema({
     type: {type: String, default: '0'},
 
     // 文章是否公开  true 公开  false 私密
-    overt: {type: Boolean, default: true},
+    private: {type: Boolean, default: true},
 
     // 创建时间
     createTime: {type: Date, default: Date.now},
@@ -36,11 +36,11 @@ const articleSchema = new mongoose.Schema({
     //关键字
     keywords: { type: String},
 
-    // 文章是否发布 true 发布
-    release: {type: Boolean, default: true},
+    // 是否发布 PUB 发布 DRA 草稿 DEL 删除
+    status: {type: String, default: true},
 
-    // 文章封面大图
-    coverUrl: {type: String, default: ''},
+    // 封面大图
+    heroImage: {type: String, default: ''},
 
 }, {
     versionKey: false // 取消__v字段

@@ -2,22 +2,22 @@
  * @Author: chengmac 
  * @Date: 2018-10-14 15:09:01 
  * @Last Modified by: chengmac
- * @Last Modified time: 2019-05-28 23:25:37
+ * @Last Modified time: 2020-11-11 20:51:21
  */
 
 const mongoose = require('mongoose');
 const globalConfig = require('./config/global.config');
-const Logger = require('./config/log4.config');
+const Logger = require('./utils/logger');
 
 exports.mongoose = mongoose;
 exports.connect = () => {
     // 连接数据库
     mongoose.connect(globalConfig.MONGODB.uri, {useNewUrlParser: true}).then(() => {
         // 连接成功
-        Logger.setLogger().info('数据库连接成功!');
+        Logger.info('the mongodb connected success...');
     }, error => {
         // 连接错误
-        Logger.setLogger('err').error('数据库连接失败!', error);
+        Logger.info('the mongodb connect fial', error);
     });
     return mongoose;
 };
