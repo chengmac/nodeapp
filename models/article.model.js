@@ -2,11 +2,11 @@
  * @Author: chengmac 
  * @Date: 2018-10-26 23:17:41 
  * @Last Modified by: chengmac
- * @Last Modified time: 2020-11-15 22:52:41
+ * @Last Modified time: 2020-11-16 20:52:10
  */
 
 const mongoose = require('../mongodb').mongoose;
-const mongoosePaginate = require('mongoose-paginate');
+const mongoosePaginate = require('mongoose-paginate-v2');
 
 const articleSchema = new mongoose.Schema({
     // 标题

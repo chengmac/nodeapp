@@ -1,14 +1,24 @@
 const express = require('express');
 const router = express.Router();
-const controller = require('../controllers/article.controller');
+const articleController = require('../controllers/article.controller');
 
+// router.get('/single', controller.single);
+router.get('/getAllArticle', articleController.validate('getAllArticle'), articleController.getAllArticle);
+// router.get('/getReleased', controller.getReleased);
+router.post('/save', articleController.validate('save'), articleController.save);
 
-router.get('/single', controller.single);
-router.get('/getAll', controller.getAll);
-router.get('/getReleased', controller.getReleased);
-// router.get('/classify', controller.classify);
-// router.get('/label', controller.label);
-router.post('/save', controller.save);
-router.delete('/batchDelete', controller.batchDelete);
+router.post('/deleteArticle', articleController.validate('deleteArticle'), articleController.deleteArticle);
+
+router.post('/createCategory', articleController.validate('createCategory'), articleController.createCategory);
+
+router.get('/categoryList', articleController.validate('categoryList'), articleController.categoryList);
+
+router.post('/createLabel', articleController.validate('createLabel'), articleController.createLabel);
+
+router.post('/deleteLabel', articleController.validate('deleteLabel'), articleController.deleteLabel);
+
+router.get('/labelList', articleController.validate('labelList'), articleController.labelList);
+
+router.post('/updateArticleStatus', articleController.validate('updateArticleStatus'), articleController.updateArticleStatus);
 
 module.exports = router;

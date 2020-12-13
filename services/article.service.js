@@ -14,15 +14,6 @@ class articleService {
             if(article) {
                 // 保存一条新增记录
                 await Message.create({name: body.title, content: '文章发布成功'});
-                // 查找是否已存在的分类
-                const category = await Category.find({name: body.category});
-                
-                if(category.length === 0) {
-                    await Category.create({name: body.category, articleId: article._id});
-                } else {
-                    // 当分类相同时，存入对应文章id
-                    await Category.updateOne({name: article.category}, {$addToSet: {articleId: article._id}});
-                }
                 // 判断标签是否为多个
                 if(body.label.length > 1) {
                     body.label.forEach(element => {
@@ -53,17 +44,116 @@ class articleService {
         }
     }
 
-    async getAll(query) {
-        Logger.info("articleService.getAll::", JSON.stringify(query));
+    async getAllArticle(query) {
+        Logger.info("articleService.getAllArticle::", JSON.stringify(query));
         try {
-            const { page } = query;
-            const allArticle = await Article.paginate({}, page.options);
-            if(allArticle) {
-                return {status: true, result: _.cloneDeep(allArticle), message: '查询成功!'};
+            const { page, status } = query;
+            const articleList = await Article.paginate({status: status}, page.options);
+            if(articleList) {
+                let result = {
+                    list: articleList.docs, 
+                    totalDocs: articleList.totalDocs, 
+                    totalPages: articleList.totalPages
+                }
+                return {status: true, result: result, message: '查询成功!'};
             }
             
         } catch(err) {
-            Logger.error("articleService.getAll::", JSON.stringify(err))
+            Logger.error("articleService.getAllArticle::", JSON.stringify(err))
+            return {status: false, result: null, message: '数据库错误!'};
+        }
+    }
+
+    async createCategory(body) {
+        Logger.info("articleService.createCategory::", JSON.stringify(body));
+        try {
+            const category = await Category.find({name: body.name});
+            if(category != 0) {
+                return {status: false, result: null, message: '该分类已经存在!'};
+            } else {
+                await Category.create(body);
+                return {status: true, result: null, message: '创建成功!'};
+            }
+        } catch(err) {
+            Logger.error("articleService.createCategory::", JSON.stringify(err))
+            return {status: false, result: null, message: '数据库错误!'};
+        }
+    }
+
+    async categoryList(body) {
+        Logger.info("articleService.categoryList::", JSON.stringify(body));
+        try {
+            const category = await Category.find({});
+            return {status: true, result: category, message: '查询成功!'};
+
+        } catch(err) {
+            Logger.error("articleService.categoryList::", JSON.stringify(err))
+            return {status: false, result: null, message: '数据库错误!'};
+        }
+    }
+
+    async createLabel(body) {
+        Logger.info("articleService.createLabel::", JSON.stringify(body));
+        try {
+            const label = await Label.find({name: body.name});
+            Logger.info("articleService.createLabel::", JSON.stringify(label));
+            if(!label) {
+                return {status: false, result: null, code: 200, message: '该标签已经存在!'};
+            } else {
+                await Label.create(body);
+                return {status: true, result: null, message: '创建成功!'};
+            }
+        } catch(err) {
+            Logger.error("articleService.createLabel::", JSON.stringify(err))
+            return {status: false, result: null, message: '数据库错误!'};
+        }
+    }
+
+    async labelList(body) {
+        Logger.info("articleService.labelList::", JSON.stringify(body));
+        try {
+            const label = await Label.find({}, 'name');
+            return {status: true, result: label, message: '查询成功'};
+        } catch(err) {
+            Logger.error("articleService.labelList::", JSON.stringify(err))
+            return {status: false, result: null, message: '数据库错误!'};
+        }
+    }
+
+    async deleteLabel(body) {
+        Logger.info("articleService.deleteLabel::", JSON.stringify(body));
+        try {
+            const label = await Label.deleteOne({"name": body.labelName});
+            return {status: true, result: label, message: '删除成功'};
+        } catch(err) {
+            Logger.error("articleService.deleteLabel::", JSON.stringify(err))
+            return {status: false, result: null, message: '数据库错误!'};
+        }
+    }
+
+    async deleteArticle(body) {
+        Logger.info("articleService.deleteArticle::", JSON.stringify(body));
+        try {
+            const article = await Article.deleteOne({_id: body.articleId});
+            return {status: true, result: article, message: '删除成功'};
+        } catch(err) {
+            Logger.error("articleService.deleteArticle::", JSON.stringify(err))
+            return {status: false, result: null, message: '数据库错误!'};
+        }
+    }
+
+    async updateArticleStatus(body) {
+        Logger.info("articleService.updateArticleStatus::", JSON.stringify(body));
+        try {
+            const {articleId, status} = body;
+            const article = await Article.update({_id: articleId}, { status: status}, (err, raw) => {
+                if(err) {
+                    Logger.info("articleService.updateArticleStatus update::", JSON.stringify(err));
+                }
+            });
+            return {status: true, result: article, message: '修改成功'};
+        } catch(err) {
+            Logger.error("articleService.updateArticleStatus::", JSON.stringify(err))
             return {status: false, result: null, message: '数据库错误!'};
         }
     }

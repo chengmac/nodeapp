@@ -1,0 +1,1 @@
+exports.QINIUYUN_DOMAIN = 'https://image.chengmac.cn'

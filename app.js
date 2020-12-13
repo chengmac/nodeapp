@@ -10,6 +10,7 @@ const index = require('./routes');
 const user = require('./routes/user');
 const message = require('./routes/message');
 const article = require('./routes/article');
+const upload = require('./routes/upload');
 const interceptor = require('./routes/interceptor');
 
 app.set('port', globalConfig.APP.port);
@@ -33,6 +34,9 @@ app.use('/api/message', message);
 
 //文章相关
 app.use('/api/article', article);
+
+// 上传
+app.use('/api/upload', upload);
 
 // 启动服务
 http.createServer(app).listen(app.get('port'), () => {
