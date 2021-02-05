@@ -1,8 +1,8 @@
 /*
- * @Author: chengmac 
- * @Date: 2018-10-26 23:31:58 
+ * @Author: chengmac
+ * @Date: 2018-10-26 23:31:58
  * @Last Modified by: chengmac
- * @Last Modified time: 2020-12-13 16:04:53
+ * @Last Modified time: 2021-01-10 00:10:53
  */
 
 const { handleError, handleSuccess } = require('../utils/handle');
@@ -10,18 +10,18 @@ const Article = require('../models/article.model');
 const ArticleService = require('../services/article.service');
 const { body, query ,validationResult } = require('express-validator');
 const Logger = require('../utils/logger');
+const { ApiValidationError } = require('../utils/customError');
 
-class articleCtrl { 
+class articleCtrl {
     // 保存文章
     async save(req, res, next) {
         Logger.info('articleController.save::', JSON.stringify(req.body));
         try {
             const errors = validationResult(req);
             if(!errors.isEmpty()) {
-                throw new Error(errors.array()[0].msg);
+                throw new CustomError(errors);
             }
             const result = await ArticleService.save(req.body);
-            Logger.info('articleController.save error::', JSON.stringify(result));
             if(result.status) {
                 handleSuccess({ res, ...result});
             } else {
@@ -35,27 +35,34 @@ class articleCtrl {
     }
 
     // 获取单个文章
-    single(req, res) {
-        const { id } = req.query;
-        Article.findById(id).then(docs => {
-            if(docs) {
-                handleSuccess({ res, result: docs, message: '查询成功' });
+    async getArticleById(req, res, next) {
+        Logger.info('articleController.getArticleById::', JSON.stringify(req.query));
+        try {
+            const errors = validationResult(req);
+            if(!errors.isEmpty()) {
+                throw new Error(errors.array());
             }
-        })
-        .catch(err => {
-            handleError({res, err, message: '查询失败', code: 400});
-        });
+            const result = await ArticleService.getArticleById(req.query);
+            if(result.status) {
+                handleSuccess({ res, ...result});
+            } else {
+                handleError({ res, code: 400, ...result });
+            }
+        } catch(err) {
+            Logger.error('articleController.getArticleById::', JSON.stringify(err));
+            handleError({ res, err, message: err.message, code: 400 });
+            next(err);
+        }
     }
-    
+
     async getAllArticle(req, res, next) {
         Logger.info('articleController.getAllArticle::', JSON.stringify(req.query));
         try {
             const errors = validationResult(req);
             if(!errors.isEmpty()) {
-                throw new Error(errors.array()[0].msg);
+                throw new ApiValidationError(errors.array());
             }
             const result = await ArticleService.getAllArticle(req.query);
-            Logger.info('articleController.getAllArticle error::', JSON.stringify(result));
             if(result.status) {
                 handleSuccess({ res, ...result});
             } else {
@@ -86,10 +93,9 @@ class articleCtrl {
         try {
             const errors = validationResult(req);
             if(!errors.isEmpty()) {
-                throw new Error(errors.array()[0].msg);
+                throw new Error(errors.array());
             }
             const result = await ArticleService.deleteArticle(req.body);
-            Logger.info('articleController.deleteArticle error::', JSON.stringify(result));
             if(result.status) {
                 handleSuccess({ res, ...result});
             } else {
@@ -115,10 +121,9 @@ class articleCtrl {
         try {
             const errors = validationResult(req);
             if(!errors.isEmpty()) {
-                throw new Error(errors.array()[0].msg);
+                throw new Error(errors.array());
             }
             const result = await ArticleService.createCategory(req.body);
-            Logger.info('articleController.createCategory error::', JSON.stringify(result));
             if(result.status) {
                 handleSuccess({ res, ...result});
             } else {
@@ -136,10 +141,9 @@ class articleCtrl {
         try {
             const errors = validationResult(req);
             if(!errors.isEmpty()) {
-                throw new Error(errors.array()[0].msg);
+                throw new Error(errors.array());
             }
             const result = await ArticleService.categoryList(req.body);
-            Logger.info('articleController.categoryList error::', JSON.stringify(result));
             if(result.status) {
                 handleSuccess({ res, ...result});
             } else {
@@ -157,10 +161,9 @@ class articleCtrl {
         try {
             const errors = validationResult(req);
             if(!errors.isEmpty()) {
-                throw new Error(errors.array()[0].msg);
+                throw new Error(errors.array());
             }
             const result = await ArticleService.createLabel(req.body);
-            Logger.info('articleController.createLabel error::', JSON.stringify(result));
             if(result.status) {
                 handleSuccess({ res, ...result});
             } else {
@@ -178,10 +181,9 @@ class articleCtrl {
         try {
             const errors = validationResult(req);
             if(!errors.isEmpty()) {
-                throw new Error(errors.array()[0].msg);
+                throw new Error(errors.array());
             }
             const result = await ArticleService.labelList(req.body);
-            Logger.info('articleController.labelList error::', JSON.stringify(result));
             if(result.status) {
                 handleSuccess({ res, ...result});
             } else {
@@ -199,10 +201,9 @@ class articleCtrl {
         try {
             const errors = validationResult(req);
             if(!errors.isEmpty()) {
-                throw new Error(errors.array()[0].msg);
+                throw new Error(errors.array());
             }
             const result = await ArticleService.deleteLabel(req.body);
-            Logger.info('articleController.deleteLabel error::', JSON.stringify(result));
             if(result.status) {
                 handleSuccess({ res, ...result});
             } else {
@@ -220,10 +221,9 @@ class articleCtrl {
         try {
             const errors = validationResult(req);
             if(!errors.isEmpty()) {
-                throw new Error(errors.array()[0].msg);
+                throw new Error(errors.array());
             }
             const result = await ArticleService.updateArticleStatus(req.body);
-            Logger.info('articleController.updateArticleStatus error::', JSON.stringify(result));
             if(result.status) {
                 handleSuccess({ res, ...result});
             } else {
@@ -236,11 +236,32 @@ class articleCtrl {
         }
     }
 
+    async updateArticle(req, res, next) {
+        Logger.info('articleController.updateArticle::', JSON.stringify(req.body));
+        try {
+            const errors = validationResult(req);
+            if(!errors.isEmpty()) {
+                throw new ApiValidationError(errors.array());
+            }
+            const result = await ArticleService.updateArticle(req.body);
+            if(result.status) {
+                handleSuccess({ res, ...result});
+            } else {
+                handleError({ res, code: 400, ...result });
+            }
+        } catch(err) {
+            Logger.error('articleController.updateArticle::', JSON.stringify(err));
+            handleError({ res, err, message: err.message, code: 400 });
+            next(err);
+        }
+    }
+
     // 验证req
     validate(method) {
         switch(method) {
             case 'save': return [
-                body('title', 'title不能为空').notEmpty(), 
+                body('title', 'title不能为空').notEmpty(),
+                body('subtitle', 'subtitle不能为空').notEmpty(),
                 body('category', 'category不能为空').notEmpty(),
                 body('label', 'label不能为空').notEmpty(),
                 body('type', 'type不能为空').notEmpty(),
@@ -250,12 +271,12 @@ class articleCtrl {
                 body('status', 'status不能为空').notEmpty(),
             ];
             case 'getAllArticle': return [
-                query('page', 'page不能为空').notEmpty(), 
+                query('page', 'page不能为空').notEmpty(),
                 query('pageSize', 'pageSize不能为空').notEmpty(),
                 query('status', 'status不能为空').notEmpty(),
             ];
             case 'createCategory': return [
-                body('name', 'name必须为string').isString(), 
+                body('name', 'name必须为string').isString(),
                 body('submenu', 'submenu必须为布尔').isBoolean()
             ];
             case 'createLabel': return [
@@ -266,6 +287,8 @@ class articleCtrl {
             case 'deleteLabel': return [body('id', 'id不能为空').isEmpty()];
             case 'deleteArticle': return [body('id', 'id不能为空').isEmpty()];
             case 'updateArticleStatus': return [body('status', 'status不能为空').notEmpty()];
+            case 'getArticleById': return [query('articleId', 'articleId不能为空').notEmpty()];
+            case 'updateArticle': return [];
         }
     }
 }

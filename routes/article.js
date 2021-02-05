@@ -2,7 +2,7 @@ const express = require('express');
 const router = express.Router();
 const articleController = require('../controllers/article.controller');
 
-// router.get('/single', controller.single);
+router.get('/getArticleById', articleController.validate('getArticleById'), articleController.getArticleById);
 router.get('/getAllArticle', articleController.validate('getAllArticle'), articleController.getAllArticle);
 // router.get('/getReleased', controller.getReleased);
 router.post('/save', articleController.validate('save'), articleController.save);
@@ -20,5 +20,6 @@ router.post('/deleteLabel', articleController.validate('deleteLabel'), articleCo
 router.get('/labelList', articleController.validate('labelList'), articleController.labelList);
 
 router.post('/updateArticleStatus', articleController.validate('updateArticleStatus'), articleController.updateArticleStatus);
+router.post('/updateArticle', articleController.validate('updateArticle'), articleController.updateArticle);
 
 module.exports = router;

@@ -1,7 +1,7 @@
 exports.handleError = ({ res, err, message, code }) => {
-    code ? res.status(code).jsonp({ success: false, error: err, message}) : res.jsonp({ success: false, error: err, message});
+    code ? res.status(code).send({ success: false, err, message}) : res.send({ success: false, err, message});
 };
 
 exports.handleSuccess = ({ res, message, result }) => {
-    res.jsonp({ success: true, message, result });
+    res.send({ success: true, message, result });
 };

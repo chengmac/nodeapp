@@ -1,13 +1,14 @@
 /*
- * @Author: chengmac 
- * @Date: 2018-10-14 14:59:43 
+ * @Author: chengmac
+ * @Date: 2018-10-14 14:59:43
  * @Last Modified by: chengmac
- * @Last Modified time: 2020-11-15 21:10:13
+ * @Last Modified time: 2021-01-09 11:25:03
  */
 const { handleError, handleSuccess } = require('../utils/handle');
 const { body, validationResult } = require('express-validator');
 const Logger = require('../utils/logger');
 const UserService = require('../services/user.service');
+const { ApiValidationError } = require('../utils/customError');
 
 class userCtrl {
     constructor() {}
@@ -18,7 +19,7 @@ class userCtrl {
         try {
             const errors = validationResult(req);
             if(!errors.isEmpty()) {
-                throw new Error(errors.array()[0].msg);
+                throw new ApiValidationError(errors.array());
             }
             const result = await UserService.login(req.body);
             Logger.info('userController.login error::', JSON.stringify(result));

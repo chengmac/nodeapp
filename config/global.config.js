@@ -1,8 +1,8 @@
 /*
- * @Author: chengmac 
- * @Date: 2018-10-14 14:56:11 
+ * @Author: chengmac
+ * @Date: 2018-10-14 14:56:11
  * @Last Modified by: chengmac
- * @Last Modified time: 2020-11-08 20:27:16
+ * @Last Modified time: 2021-01-31 15:30:55
  */
 
 // 访问端口
@@ -12,7 +12,7 @@ exports.APP = {
 
 exports.MONGODB = {
     // 根据环境变量来切换数据库地址
-    uri: process.env.NODE_ENV === "development" ? 
+    uri: process.env.NODE_ENV === "development" ?
     "mongodb://120.53.236.75:27017/nodeService" :
     "mongodb://120.53.236.75:27017/nodeService"
 };
@@ -37,4 +37,10 @@ exports.QINIU = {
 
 // 博客默认分类
 exports.classify = ['前端', '服务端', '数据库', '其他']
+
+// 网易云音乐配置
+exports.MUISC = {
+    username: 'gd2216866233@163.com',
+    password: 'gd311126'
+}
 

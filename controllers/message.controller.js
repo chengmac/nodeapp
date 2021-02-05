@@ -1,13 +1,14 @@
 /*
- * @Author: chengmac 
- * @Date: 2018-11-05 20:27:13 
+ * @Author: chengmac
+ * @Date: 2018-11-05 20:27:13
  * @Last Modified by: chengmac
- * @Last Modified time: 2019-05-30 22:04:10
+ * @Last Modified time: 2021-01-09 11:25:06
  */
 
 const { handleError, handleSuccess } = require('../utils/handle');
 const Message = require('../models/message.model');
 const messageCtrl = {};
+const { ApiValidationError } = require('../utils/customError');
 
 messageCtrl.get = (req, res) => {
     Message.find({}).then(data => {
