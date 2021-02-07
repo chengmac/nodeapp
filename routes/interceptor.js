@@ -6,7 +6,13 @@
  */
 const interceptor = (req, res, next) => {
     // Set Header
-    const allowedOrigins = ['http://localhost:8000', 'http://localhost:8001', 'https://admin.chengmac.cn'];
+    const allowedOrigins = [
+        'http://localhost:8000',
+        'http://localhost:8001',
+        'https://admin.chengmac.cn',
+        'https://chengmac.cn',
+        'https://www.chengmac.cn'
+    ];
     const origin = req.headers.origin || '';
     if (allowedOrigins.includes(origin)) {
         res.setHeader('Access-Control-Allow-Origin', origin);
