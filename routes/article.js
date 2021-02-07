@@ -21,5 +21,6 @@ router.get('/labelList', articleController.validate('labelList'), articleControl
 
 router.post('/updateArticleStatus', articleController.validate('updateArticleStatus'), articleController.updateArticleStatus);
 router.post('/updateArticle', articleController.validate('updateArticle'), articleController.updateArticle);
+router.get('/search', articleController.validate('search'), articleController.search);
 
 module.exports = router;

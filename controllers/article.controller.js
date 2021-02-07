@@ -2,7 +2,7 @@
  * @Author: chengmac
  * @Date: 2018-10-26 23:31:58
  * @Last Modified by: chengmac
- * @Last Modified time: 2021-01-10 00:10:53
+ * @Last Modified time: 2021-02-07 21:26:02
  */
 
 const { handleError, handleSuccess } = require('../utils/handle');
@@ -255,6 +255,25 @@ class articleCtrl {
             next(err);
         }
     }
+    async search(req, res, next) {
+        Logger.info('articleController.search::', JSON.stringify(req.query));
+        try {
+            const errors = validationResult(req);
+            if(!errors.isEmpty()) {
+                throw new ApiValidationError(errors.array());
+            }
+            const result = await ArticleService.search(req.query);
+            if(result.status) {
+                handleSuccess({ res, ...result});
+            } else {
+                handleError({ res, code: 400, ...result });
+            }
+        } catch(err) {
+            Logger.error('articleController.search::', JSON.stringify(err));
+            handleError({ res, err, message: err.message, code: 400 });
+            next(err);
+        }
+    }
 
     // 验证req
     validate(method) {
@@ -289,6 +308,7 @@ class articleCtrl {
             case 'updateArticleStatus': return [body('status', 'status不能为空').notEmpty()];
             case 'getArticleById': return [query('articleId', 'articleId不能为空').notEmpty()];
             case 'updateArticle': return [];
+            case 'search': return [];
         }
     }
 }

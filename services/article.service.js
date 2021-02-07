@@ -181,6 +181,23 @@ class articleService {
         }
     }
 
+    async search(query) {
+        Logger.info("articleService.search::", JSON.stringify(query));
+        try {
+            let regexp=new RegExp(query.keywords, 'i');
+            const search = await Article.find({$or:[
+                {title:{$regex:regexp}},
+                {subtitle:{$regex:regexp}},
+                {category:{$regex:regexp}},
+                {label:{$regex:regexp}}
+            ]});
+            return {status: true, result: search, message: '查询成功'};
+        } catch(err) {
+            Logger.error("articleService.search::", JSON.stringify(err))
+            return {status: false, result: err, message: '数据库错误!'};
+        }
+    }
+
 }
 
 module.exports = new articleService();
