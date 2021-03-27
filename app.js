@@ -22,9 +22,10 @@ app.use(bodyParser.urlencoded({ extended: false }));
 // 启动数据库
 mongoose.connect();
 
-// 路由
-
 // 路由拦截器
+app.all('*', interceptor);
+
+// 路由拦
 app.all('*', interceptor);
 
 //账户相关
@@ -43,7 +44,7 @@ app.use('/api/upload', upload);
 app.use('/api/muisc', muisc);
 
 // 启动服务
-http.createServer(app).listen(app.get('port'), () => {
+app.listen(app.get('port'), '0.0.0.0', () => {
     console.log(`server running！port at ${app.get('port')}...`);
 });
 
