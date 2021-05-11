@@ -2,7 +2,7 @@
  * @Author: chengmac
  * @Date: 2018-10-14 14:59:43
  * @Last Modified by: chengmac
- * @Last Modified time: 2021-01-09 11:25:03
+ * @Last Modified time: 2021-04-16 19:02:34
  */
 const { handleError, handleSuccess } = require('../utils/handle');
 const { body, validationResult } = require('express-validator');
@@ -30,8 +30,7 @@ class userCtrl {
             }
         } catch(err) {
             Logger.error('userController.login::', JSON.stringify(err));
-            handleError({ res, err, message: err.message, code: 400 });
-            next();
+            next(err);
         }
     }
     // 验证req

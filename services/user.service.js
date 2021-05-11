@@ -20,7 +20,8 @@ class userService {
             const token = jwt.sign({
                 data: {
                     name: username,
-                    admin: username === globalConfig.AUTH.defaultUsername ? true : false //默认用户为admin
+                    accountRole: username === globalConfig.AUTH.defaultUsername ? 'admin' : 'user', //默认用户为admin
+                    loginTime: Date.now()
                 },
                 // 设置token有效期为7天
                 exp: Math.floor(Date.now() / 1000) + (60 * 60 * 24 * 7)
@@ -46,7 +47,7 @@ class userService {
                     Logger.error(username + '用户创建失败');
                     return {status: false, result: null, message: '来者何人,报上名来!'};
                 }
-            }       
+            }
         } catch(err) {
             Logger.error("userService.login::",JSON.stringify(err))
             return {status: false, result: null, message: '数据库错误!'};

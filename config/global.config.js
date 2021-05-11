@@ -2,7 +2,7 @@
  * @Author: chengmac
  * @Date: 2018-10-14 14:56:11
  * @Last Modified by: chengmac
- * @Last Modified time: 2021-01-31 15:30:55
+ * @Last Modified time: 2021-05-11 23:02:11
  */
 
 // 访问端口
@@ -13,8 +13,8 @@ exports.APP = {
 exports.MONGODB = {
     // 根据环境变量来切换数据库地址
     uri: process.env.NODE_ENV === "development" ?
-    "mongodb://120.53.236.75:27017/nodeService" :
-    "mongodb://120.53.236.75:27017/nodeService"
+    "mongodb://admin:zr%40187420@120.53.236.75:27017/nodeService" :
+    "mongodb://admin:zr%40187420@120.53.236.75:27017/nodeService"
 };
 
 //
@@ -44,3 +44,8 @@ exports.MUISC = {
     password: 'gd311126'
 }
 
+// 百度AK
+exports.BAIDU = {
+    ak: '0xWxhMsdTA5nGqPjRN2NHrovbLryRV1e',
+    url: 'https://api.map.baidu.com/location/ip'
+}

@@ -2,7 +2,7 @@
  * @Author: chengmac
  * @Date: 2018-10-14 15:09:01
  * @Last Modified by: chengmac
- * @Last Modified time: 2021-01-17 18:43:38
+ * @Last Modified time: 2021-04-13 20:55:22
  */
 
 const mongoose = require('mongoose');
@@ -17,7 +17,8 @@ exports.connect = () => {
         Logger.info('the mongodb connected success...');
     }, error => {
         // 连接错误
-        Logger.info('the mongodb connect fial', error);
+        console.log('the mongodb connect fial', error)
+        Logger.error('the mongodb connect fial', error);
     });
     return mongoose;
 };

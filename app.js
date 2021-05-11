@@ -12,7 +12,7 @@ const message = require('./routes/message');
 const article = require('./routes/article');
 const upload = require('./routes/upload');
 const muisc = require('./routes/muisc');
-const interceptor = require('./routes/interceptor');
+const interceptor = require('./utils/interceptor');
 
 app.set('port', globalConfig.APP.port);
 app.use(CookieParser());
@@ -22,11 +22,8 @@ app.use(bodyParser.urlencoded({ extended: false }));
 // 启动数据库
 mongoose.connect();
 
-// 路由拦截器
-app.all('*', interceptor);
-
-// 路由拦
-app.all('*', interceptor);
+// 设置request header
+app.use(interceptor);
 
 //账户相关
 app.use('/api/user', user);

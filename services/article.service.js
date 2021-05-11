@@ -4,6 +4,7 @@ const Category = require('../models/category.model');
 const Label = require('../models/label.model');
 const Message = require('../models/message.model');
 const _ = require('lodash');
+const { ARTICLE_STATUS_ENUM } = require('../utils/constant');
 
 class articleService {
     async save(body){
@@ -195,6 +196,26 @@ class articleService {
         } catch(err) {
             Logger.error("articleService.search::", JSON.stringify(err))
             return {status: false, result: err, message: '数据库错误!'};
+        }
+    }
+
+    async getPublishArticle(query) {
+        Logger.info("articleService.getPublishArticle::", JSON.stringify(query));
+        try {
+            const { page } = query;
+            const articleList = await Article.paginate({status: ARTICLE_STATUS_ENUM.PUBLISH}, page.options, {_id: 0});
+            if(articleList) {
+                let result = {
+                    list: articleList.docs,
+                    totalDocs: articleList.totalDocs,
+                    totalPages: articleList.totalPages
+                }
+                return {status: true, result: result, message: '查询成功!'};
+            }
+
+        } catch(err) {
+            Logger.error("articleService.getPublishArticle::", JSON.stringify(err))
+            return {status: false, result: null, message: '数据库错误!'};
         }
     }
 

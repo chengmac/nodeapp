@@ -2,12 +2,13 @@
  * @Author: chengmac
  * @Date: 2018-10-26 23:31:58
  * @Last Modified by: chengmac
- * @Last Modified time: 2021-02-07 21:26:02
+ * @Last Modified time: 2021-05-11 22:41:33
  */
 
 const { handleError, handleSuccess } = require('../utils/handle');
 const Article = require('../models/article.model');
 const ArticleService = require('../services/article.service');
+const VisitorService = require('../services/visitor.service');
 const { body, query ,validationResult } = require('express-validator');
 const Logger = require('../utils/logger');
 const { ApiValidationError } = require('../utils/customError');
@@ -75,17 +76,25 @@ class articleCtrl {
         }
     }
     // 获取所有已发布文章
-    getReleased(req, res) {
-        const { page} = req.query;
-        const options = {page};
-        Article.paginate({release: true}, options).then(docs => {
-            if(docs) {
-                handleSuccess({ res, result: docs, message: '查询成功' });
+    async getPublishArticle(req, res, next) {
+        Logger.info('articleController.getPublishArticle::', JSON.stringify(req.query));
+        try {
+            const errors = validationResult(req);
+            if(!errors.isEmpty()) {
+                throw new ApiValidationError(errors.array());
             }
-        })
-        .catch(err => {
-            handleError({res, err, message: '查询失败', code: 400});
-        });
+            await VisitorService.getVisitorIp(req);
+            const result = await ArticleService.getPublishArticle(req.query);
+            if(result.status) {
+                handleSuccess({ res, ...result});
+            } else {
+                handleError({ res, code: 400, ...result });
+            }
+        } catch(err) {
+            Logger.error('articleController.getPublishArticle::', JSON.stringify(err));
+            handleError({ res, err, message: err.message, code: 400 });
+            next(err);
+        }
     }
 
     async deleteArticle(req, res, next) {
@@ -309,6 +318,7 @@ class articleCtrl {
             case 'getArticleById': return [query('articleId', 'articleId不能为空').notEmpty()];
             case 'updateArticle': return [];
             case 'search': return [];
+            case 'getPublishArticle': return [];
         }
     }
 }

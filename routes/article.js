@@ -4,7 +4,7 @@ const articleController = require('../controllers/article.controller');
 
 router.get('/getArticleById', articleController.validate('getArticleById'), articleController.getArticleById);
 router.get('/getAllArticle', articleController.validate('getAllArticle'), articleController.getAllArticle);
-// router.get('/getReleased', controller.getReleased);
+router.get('/getPublishArticle', articleController.validate('getPublishArticle'), articleController.getPublishArticle);
 router.post('/save', articleController.validate('save'), articleController.save);
 
 router.post('/deleteArticle', articleController.validate('deleteArticle'), articleController.deleteArticle);
